@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="baidu-site-verification" content="17NdqmLQdp" />
+    <meta name="author" content="wuzhefang" />
+    <title>Html Dom 属性及操作 | wuzhefang</title>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/feed/" rel="alternate" title="wuzhefang" type="application/atom+xml" />
+    <link rel="stylesheet" href="/media/css/style.css">
+    <link rel="stylesheet" href="/media/css/highlight.css">
+    <script type="text/javascript" src="/media/js/jquery-1.7.1.min.js"></script>
+  </head>
+  <script type="text/javascript">
+    function setTimeSpan(){
+    	var date = new Date();
+    	timeSpan.innerText=date.format('yyyy-MM-dd hh:mm:ss');
+    }
+    
+    Date.prototype.format = function(format)
+		{
+    var o =
+    	{
+    	    "M+" : this.getMonth()+1, //month
+    	    "d+" : this.getDate(),    //day
+    	    "h+" : this.getHours(),   //hour
+    	    "m+" : this.getMinutes(), //minute
+    	    "s+" : this.getSeconds(), //second
+    	    "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
+    	    "S" : this.getMilliseconds() //millisecond
+    	}
+    	if(/(y+)/.test(format))
+    	format=format.replace(RegExp.$1,(this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    	for(var k in o)
+    	if(new RegExp("("+ k +")").test(format))
+    	format = format.replace(RegExp.$1,RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length));
+    	return format;
+		}
+  </script>
+  <body onLoad="setInterval(setTimeSpan,1000);">
+
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>Html Dom 属性及操作</h1>
+        </header>
+        <nav>
+        <span><a title="首页" class="" href="/">Home</a></span>
+        <span><a title="关于" class="" href="/about/">About</a></span>
+        <span><a title="来宾" class="" href="/guestbook/">Guestbook</a></span>
+        <span><a title="分类" class="" href="/categories/">Categories</a></span>
+<!--<span><a title="内容" class="" href="/content/">Content</a></span>-->
+        <span><a title="标签" class="" href="/tags/">Tags</a></span>
+        <span><a title="链接" class="" href="/links/">Links</a></span>
+        <span><a title="订阅" class="" href="/feed/">Subscribe</a></span>
+
+        </nav>
+        <article class="content">
+        <section class="post">
+<p>所有节点（Node）都拥有的属性和方法</p>
+
+<table>
+<thead>
+<tr>
+<th>属性 </th>
+<th> 描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>attributes </td>
+<td> 表示该节点的所有属性节点对象的数组</td>
+</tr>
+<tr>
+<td>nodeType </td>
+<td> 代表节点的类型</td>
+</tr>
+<tr>
+<td>nodeName </td>
+<td> 返回节点的名字</td>
+</tr>
+<tr>
+<td>nodeValue </td>
+<td> 代表节点的内容</td>
+</tr>
+<tr>
+<td>childNodes</td>
+<td>当前节点的所有子节点数组，如果没有子节点，则返回空数组</td>
+</tr>
+<tr>
+<td>parentNode</td>
+<td>返回当前节点的父节点，如果没有父节点，则返回null</td>
+</tr>
+<tr>
+<td>firstChild</td>
+<td>返回当前节点的一个子节点，如果没有子节点，则返回null</td>
+</tr>
+<tr>
+<td>lastChild</td>
+<td>返回当前节点的最后一个子节点，如果没有子节点，则返回null</td>
+</tr>
+<tr>
+<td>nextSibling</td>
+<td>返回当前节点的下一个兄弟节点。如果没有这样的节点，则返回null</td>
+</tr>
+<tr>
+<td>previousSibling</td>
+<td>返回当前节点的上一个兄弟节点，如果没有这样的节点则返回null</td>
+</tr>
+</tbody>
+</table>
+
+
+<table>
+<thead>
+<tr>
+<th>方法 </th>
+<th> 描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hasChildNodes()</td>
+<td>如果当前节点拥有子节点，则返回true</td>
+</tr>
+<tr>
+<td>appendChild()</td>
+<td>给当前节点增加一个子节点，增加的子节点位于当前节点的所有子节点的末尾</td>
+</tr>
+<tr>
+<td></td>
+<td> 方法参数为Node对象</td>
+</tr>
+<tr>
+<td>InsertBefore()</td>
+<td>插入一个节点，为止在当前节点的指定子节点之前，如果指定子节点不存在，则执行效果</td>
+</tr>
+<tr>
+<td></td>
+<td>和appendChild方法相同。</td>
+</tr>
+<tr>
+<td></td>
+<td>如果插入的已经是当前节点的子节点，则将这个节点移动到指定节点前</td>
+</tr>
+<tr>
+<td></td>
+<td>方法第一个参数是要插入的节点。</td>
+</tr>
+<tr>
+<td></td>
+<td>方法的第二个参数是当前节点的指定子节点，新插入的节点位于这个节点之前。</td>
+</tr>
+<tr>
+<td>removeChild()</td>
+<td>从文档树中删除当前节点的指定子节点，同时返回指定的子节点。</td>
+</tr>
+<tr>
+<td></td>
+<td>方法的参数是呀哦删除的子节点。</td>
+</tr>
+<tr>
+<td>replaceChild()</td>
+<td>用另一个节点替换当前节点的一个子节点，并且返回指定的子节点。</td>
+</tr>
+<tr>
+<td></td>
+<td>方法第二个参数是新的子节点。</td>
+</tr>
+<tr>
+<td></td>
+<td>方法第二个参数是被替换的子节点。</td>
+</tr>
+<tr>
+<td>cloneNode()</td>
+<td>复制当前节点，或者复制当前节点以及它的所有子孙节点。</td>
+</tr>
+<tr>
+<td></td>
+<td>方法参数为true或false。True表示递归的复制所有子孙节点，false表示只复制当前节点。</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+<section class="meta">
+
+<br/>
+<br/>
+<span>
+	<a  href="/2015/01/14/javathread/" class="pageNav"  >Previous</a>
+	&nbsp;&nbsp;&nbsp;
+	<a   class="pageNavInvalid"  >Next</a>
+</span>
+<hr>
+<span class="author">
+  <a href="http://wuzhefang.github.com">wuzhefang</a>
+</span>
+<span class="time">
+  /
+  <time datetime="2015-01-15">2015-01-15</time>
+</span>
+<br />
+<span class="license">
+  Published use <a rel="license" href="http://duoshuo.com/">多说</a>
+</span>
+
+<span class="categories">
+  in categories
+  
+  <a href="/categories/#html" title="html">html</a>&nbsp;
+  
+</span>
+
+
+<span class="tags">
+  tagged with 
+  
+</span>
+
+</section>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"wuzhefang"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+
+        </article>
+      </div>
+
+    <footer>
+        <p><small>
+<!-- <a href="http://github.com/wuzhefang/wuzhefang.github.io/new/master/_posts" target="_blank" title="撰写文章">Po</a>wer<a href="http://github.com/wuzhefang/wuzhefang.github.io/edit/master/_posts/2015-01-15-htmldom.md" target="_blank" title="编辑页面">ed</a>--> 
+Powored by <a href="https://github.com/mojombo/jekyll">Jekyll</a> & <a href="http://pages.github.com">GitHub</a> | Copyright 2012 - 2015 by <a href="/about/">wuzhefang</a> | <span class="label label-info" id="timeSpan"></span></small></p>
+    </footer>
+
+    </div>
+
+    <script>
+    /*
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44429524-1', 'wuzhefang.github.io');
+  ga('send', 'pageview');
+  */
+</script>
+
+
+
+    <!-- Baidu Button BEGIN -->
+		<script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=4&amp;pos=right&amp;uid=541841" ></script>
+		<script type="text/javascript" id="bdshell_js"></script>
+		<script type="text/javascript">
+		var bds_config={"bdTop":170};
+		document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+		</script>
+		<!-- Baidu Button END -->
+ <script type="text/javascript">
+ var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F6b2845040fcb1d8f55c1ae7b52400894' type='text/javascript'%3E%3C/script%3E"));
+ </script>
+
+ 
+ </body>
+</html>

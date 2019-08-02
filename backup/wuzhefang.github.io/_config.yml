@@ -1,0 +1,8 @@
+markdown: rdiscount
+permalink: /:year/:month/:day/:title/
+#url: http://wuzhefang.github.io
+author: wuzhefang
+highlighter: true
+safe: true
+paginate: 16
+

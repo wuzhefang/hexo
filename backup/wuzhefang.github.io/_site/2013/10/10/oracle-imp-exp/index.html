@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="baidu-site-verification" content="17NdqmLQdp" />
+    <meta name="author" content="wuzhefang" />
+    <title>oracle中exp,imp的使用详解 | wuzhefang</title>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/feed/" rel="alternate" title="wuzhefang" type="application/atom+xml" />
+    <link rel="stylesheet" href="/media/css/style.css">
+    <link rel="stylesheet" href="/media/css/highlight.css">
+    <script type="text/javascript" src="/media/js/jquery-1.7.1.min.js"></script>
+  </head>
+  <script type="text/javascript">
+    function setTimeSpan(){
+    	var date = new Date();
+    	timeSpan.innerText=date.format('yyyy-MM-dd hh:mm:ss');
+    }
+    
+    Date.prototype.format = function(format)
+		{
+    var o =
+    	{
+    	    "M+" : this.getMonth()+1, //month
+    	    "d+" : this.getDate(),    //day
+    	    "h+" : this.getHours(),   //hour
+    	    "m+" : this.getMinutes(), //minute
+    	    "s+" : this.getSeconds(), //second
+    	    "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
+    	    "S" : this.getMilliseconds() //millisecond
+    	}
+    	if(/(y+)/.test(format))
+    	format=format.replace(RegExp.$1,(this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    	for(var k in o)
+    	if(new RegExp("("+ k +")").test(format))
+    	format = format.replace(RegExp.$1,RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length));
+    	return format;
+		}
+  </script>
+  <body onLoad="setInterval(setTimeSpan,1000);">
+
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>oracle中exp,imp的使用详解</h1>
+        </header>
+        <nav>
+        <span><a title="首页" class="" href="/">Home</a></span>
+        <span><a title="关于" class="" href="/about/">About</a></span>
+        <span><a title="来宾" class="" href="/guestbook/">Guestbook</a></span>
+        <span><a title="分类" class="" href="/categories/">Categories</a></span>
+<!--<span><a title="内容" class="" href="/content/">Content</a></span>-->
+        <span><a title="标签" class="" href="/tags/">Tags</a></span>
+        <span><a title="链接" class="" href="/links/">Links</a></span>
+        <span><a title="订阅" class="" href="/feed/">Subscribe</a></span>
+
+        </nav>
+        <article class="content">
+        <section class="post">
+<p>基本语法和实例：</p>
+
+<ul>
+<li>EXP:</li>
+</ul>
+
+
+<blockquote><pre><code>  有三种主要的方式（完全、用户、表） 
+
+  1、完全： 
+
+  EXP SYSTEM/MANAGER BUFFER=64000 FILE=C:\FULL.DMP FULL=Y 
+
+  如果要执行完全导出，必须具有特殊的权限 
+
+  2、用户模式： 
+
+  EXP SONIC/SONICBUFFER=64000 FILE=C:\SONIC.DMP OWNER=SONIC 
+
+  这样用户SONIC的所有对象被输出到文件中。 
+
+  3、表模式：
+
+  EXP SONIC/SONICBUFFER=64000 FILE=C:\SONIC.DMP OWNER=SONIC TABLES=(SONIC) 
+
+  这样用户SONIC的表SONIC就被导出 
+</code></pre></blockquote>
+
+<ul>
+<li>IMP:</li>
+</ul>
+
+
+<blockquote><pre><code>  具有三种模式（完全、用户、表） 
+
+  1、完全： 
+
+  IMP SYSTEM/MANAGER BUFFER=64000 FILE=C:\FULL.DMP FULL=Y 
+
+  2、用户模式： 
+
+  IMP SONIC/SONICBUFFER=64000 FILE=C:\SONIC.DMP FROMUSER=SONIC TOUSER=SONIC 
+
+  这样用户SONIC的所有对象被导入到文件中。必须指定FROMUSER、TOUSER参数，这样才能导入数据。 
+
+  3、表模式： 
+
+  EXP SONIC/SONICBUFFER=64000 FILE=C:\SONIC.DMP OWNER=SONIC TABLES=(SONIC) 
+
+  这样用户SONIC的表SONIC就被导入。
+</code></pre></blockquote>
+
+<h1>ORACLE数据库有两类备份方法：</h1>
+
+<ul>
+<li><p>第一类为物理备份，该方法实现数据库的完整恢复，但数据库必须运行在归挡模式下（业务数据库在非归挡模式下运行），且需要极大的外部存储设备，例如磁带库；</p></li>
+<li><p>第二类备份方式为逻辑备份，业务数据库采用此种方式，此方法不需要数据库运行在归挡模式下，不但备份简单，而且可以不需要外部存储设备。</p>
+
+<p>  数据库逻辑备份方法
+　　</p></li>
+</ul>
+
+
+<p>　　ORACLE数据库的逻辑备份分为三种模式：<code>表备份</code>、<code>用户备份</code>和<code>完全备份</code>。</p>
+
+<p>　　
+  <strong>表模式</strong></p>
+
+<p>　　
+　　备份某个用户模式下指定的对象（表）。业务数据库通常采用这种备份方式。</p>
+
+<p>　　
+　　若备份到本地文件，使用如下命令：
+　　</p>
+
+<blockquote><pre><code>　　exp icdmain/icd rows=y indexes=n compress=n buffer=65536
+　　feedback=100000 volsize=0
+　　file=exp_icdmain_csd_yyyymmdd.dmp
+　　log=exp_icdmain_csd_yyyymmdd.log
+　　tables=icdmain.commoninformation,icdmain.serviceinfo,icdmain.dealinfo
+</code></pre>
+
+<p>　　
+   若直接备份到磁带设备，使用如下命令：</p>
+
+<pre><code>　　exp icdmain/icd rows=y indexes=n compress=n buffer=65536
+　　feedback=100000 volsize=0
+　　file=/dev/rmt0
+　　log=exp_icdmain_csd_yyyymmdd.log
+　　tables=icdmain.commoninformation,icdmain.serviceinfo,icdmain.dealinfo
+</code></pre>
+
+<p>　　
+　　注：在磁盘空间允许的情况下，应先备份到本地服务器，然后再拷贝到磁带。出于速度方面的考虑，尽量不要直接备份到磁带设备。</p></blockquote>
+
+<p>　　<strong>用户模式</strong></p>
+
+<p>　　备份某个用户模式下的所有对象。业务数据库通常采用这种备份方式。</p>
+
+<p>　　若备份到本地文件，使用如下命令：</p>
+
+<blockquote><pre><code>　　exp icdmain/icd owner=icdmain rows=y indexes=n compress=n buffer=65536
+　　feedback=100000 volsize=0
+　　file=exp_icdmain_yyyymmdd.dmp
+　　log=exp_icdmain_yyyymmdd.log
+</code></pre></blockquote>
+
+<p>　　若直接备份到磁带设备，使用如下命令：</p>
+
+<blockquote><pre><code>　　exp icdmain/icd owner=icdmain rows=y indexes=n compress=n buffer=65536
+　　feedback=100000 volsize=0
+　　file=/dev/rmt0
+　　log=exp_icdmain_yyyymmdd.log
+</code></pre></blockquote>
+
+<p>　　注：如果磁盘有空间，建议备份到磁盘，然后再拷贝到磁带。如果数据库数据量较小，可采用这种办法备份。</p>
+
+<p>　　以下为详细的导入导出实例：</p>
+
+<p>　　一、数据导出：</p>
+
+<p>　　1、 将数据库TEST完全导出，用户名system 密码manager 导出到D：\daochu.dmp中</p>
+
+<p>　　exp system/manager@TEST file=d：\daochu.dmp full=y</p>
+
+<p>　　2、 将数据库中system用户与sys用户的表导出</p>
+
+<p>　　exp system/manager@TEST file=d：\daochu.dmp owner=（system，sys）</p>
+
+<p>　　3、 将数据库中的表table1 、table2导出</p>
+
+<p>　　exp system/manager@TEST file=d：\daochu.dmp tables=（table1，table2）</p>
+
+<p>　　4、 将数据库中的表table1中的字段filed1以"00"打头的数据导出</p>
+
+<p>　　exp system/manager@TEST file=d：\daochu.dmp tables=（table1） query=\" where filed1 like '00%'\"</p>
+
+<p>　　上面是常用的导出，对于压缩我不太在意，用winzip把dmp文件可以很好的压缩。</p>
+
+<p>　　不过在上面命令后面 加上 compress=y  就可以了</p>
+
+<p>　　二、数据的导入</p>
+
+<p> 　 1、将D：\daochu.dmp 中的数据导入 TEST数据库中。</p>
+
+<p>　　imp system/manager@TEST  file=d：\daochu.dmp</p>
+
+<p>　　上面可能有点问题，因为有的表已经存在，然后它就报错，对该表就不进行导入。</p>
+
+<p>　　在后面加上 ignore=y 就可以了。</p>
+
+<p>　　2 将d：\daochu.dmp中的表table1 导入</p>
+
+<p>　　imp system/manager@TEST  file=d：\daochu.dmp  tables=（table1）</p>
+
+<p>　　基本上上面的导入导出够用了。不少情况我是将表彻底删除，然后导入。</p>
+
+<p>　　注意：</p>
+
+<p>　　你要有足够的权限，权限不够它会提示你。</p>
+
+<p>　　数据库时可以连上的。可以用tnsping TEST 来获得数据库TEST能否连上。</p>
+
+</section>
+<section class="meta">
+
+<br/>
+<br/>
+<span>
+	<a  href="/2013/10/10/oracle-del-tables/" class="pageNav"  >Previous</a>
+	&nbsp;&nbsp;&nbsp;
+	<a  href="/2013/10/10/oracle-kill-session/" class="pageNav"  >Next</a>
+</span>
+<hr>
+<span class="author">
+  <a href="http://wuzhefang.github.com">wuzhefang</a>
+</span>
+<span class="time">
+  /
+  <time datetime="2013-10-10">2013-10-10</time>
+</span>
+<br />
+<span class="license">
+  Published use <a rel="license" href="http://duoshuo.com/">多说</a>
+</span>
+
+<span class="categories">
+  in categories
+  
+  <a href="/categories/#database" title="database">database</a>&nbsp;
+  
+</span>
+
+
+<span class="tags">
+  tagged with 
+  
+  <a href="/tags/#oracle" title="oracle">oracle</a>&nbsp;
+  
+</span>
+
+</section>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"wuzhefang"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+
+        </article>
+      </div>
+
+    <footer>
+        <p><small>
+<!-- <a href="http://github.com/wuzhefang/wuzhefang.github.io/new/master/_posts" target="_blank" title="撰写文章">Po</a>wer<a href="http://github.com/wuzhefang/wuzhefang.github.io/edit/master/_posts/2013-10-10-oracle-imp-exp.md" target="_blank" title="编辑页面">ed</a>--> 
+Powored by <a href="https://github.com/mojombo/jekyll">Jekyll</a> & <a href="http://pages.github.com">GitHub</a> | Copyright 2012 - 2015 by <a href="/about/">wuzhefang</a> | <span class="label label-info" id="timeSpan"></span></small></p>
+    </footer>
+
+    </div>
+
+    <script>
+    /*
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44429524-1', 'wuzhefang.github.io');
+  ga('send', 'pageview');
+  */
+</script>
+
+
+
+    <!-- Baidu Button BEGIN -->
+		<script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=4&amp;pos=right&amp;uid=541841" ></script>
+		<script type="text/javascript" id="bdshell_js"></script>
+		<script type="text/javascript">
+		var bds_config={"bdTop":170};
+		document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+		</script>
+		<!-- Baidu Button END -->
+ <script type="text/javascript">
+ var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F6b2845040fcb1d8f55c1ae7b52400894' type='text/javascript'%3E%3C/script%3E"));
+ </script>
+
+ 
+ </body>
+</html>

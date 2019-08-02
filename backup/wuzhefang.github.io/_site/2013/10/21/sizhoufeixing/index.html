@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="baidu-site-verification" content="17NdqmLQdp" />
+    <meta name="author" content="wuzhefang" />
+    <title>四轴飞行器 | wuzhefang</title>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/feed/" rel="alternate" title="wuzhefang" type="application/atom+xml" />
+    <link rel="stylesheet" href="/media/css/style.css">
+    <link rel="stylesheet" href="/media/css/highlight.css">
+    <script type="text/javascript" src="/media/js/jquery-1.7.1.min.js"></script>
+  </head>
+  <script type="text/javascript">
+    function setTimeSpan(){
+    	var date = new Date();
+    	timeSpan.innerText=date.format('yyyy-MM-dd hh:mm:ss');
+    }
+    
+    Date.prototype.format = function(format)
+		{
+    var o =
+    	{
+    	    "M+" : this.getMonth()+1, //month
+    	    "d+" : this.getDate(),    //day
+    	    "h+" : this.getHours(),   //hour
+    	    "m+" : this.getMinutes(), //minute
+    	    "s+" : this.getSeconds(), //second
+    	    "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
+    	    "S" : this.getMilliseconds() //millisecond
+    	}
+    	if(/(y+)/.test(format))
+    	format=format.replace(RegExp.$1,(this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    	for(var k in o)
+    	if(new RegExp("("+ k +")").test(format))
+    	format = format.replace(RegExp.$1,RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length));
+    	return format;
+		}
+  </script>
+  <body onLoad="setInterval(setTimeSpan,1000);">
+
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>四轴飞行器</h1>
+        </header>
+        <nav>
+        <span><a title="首页" class="" href="/">Home</a></span>
+        <span><a title="关于" class="" href="/about/">About</a></span>
+        <span><a title="来宾" class="" href="/guestbook/">Guestbook</a></span>
+        <span><a title="分类" class="" href="/categories/">Categories</a></span>
+<!--<span><a title="内容" class="" href="/content/">Content</a></span>-->
+        <span><a title="标签" class="" href="/tags/">Tags</a></span>
+        <span><a title="链接" class="" href="/links/">Links</a></span>
+        <span><a title="订阅" class="" href="/feed/">Subscribe</a></span>
+
+        </nav>
+        <article class="content">
+        <section class="post">
+<p>四轴的灵魂部分---飞控＋电调了。为什么电调也算是四轴的灵魂部分呢？因为四轴要用的电调，还是有所不同的。各看官稍安勿躁，且听我慢慢道来。</p>
+
+<p>先说飞控的核心组成和大概原理，四轴飞行器相对于常规航模来说，最最复杂的就是电子部分了。之所以能飞行得很稳定，全拜电子控制部分的功劳。在常规固定翼飞机上，陀螺仪并非常用器件，在相对操控难度大点的直机上，如果不做自动稳定系统，也只是锁尾才用到陀螺仪。四轴飞行器与其不同的地方是必须配备陀螺仪，这是最基本要求，不然无法飞行，更谈不上飞稳了。不但要有，还得是3轴向(X、Y、Z)都得有，这是四轴飞行器的机械结构、动力组成特性决定的。在此基础上再辅以3轴加速度传感器，这6个自由度，就组成了飞行姿态稳定的基本部分，也是关键核心部分---惯性导航模块，简称IMU。飞行中的姿态感测全靠这个IMU了，可见它是整架模型的核心部件。</p>
+
+<p>再说说电调，四轴飞行器有四个桨(纯属费话，两两相对呈十字交叉结构，在桨的转向上分正转和反转，这样可抵消模型自身的旋转。每个桨的直径很小，通常是10寸左右。四个桨转动时的离心力是分散的。不象直机的桨，只有一个能产生集中的离心力形成陀螺性质的惯性离心力，保持机身不容易很快的侧翻掉。所以通常用到的舵机控制信号更新频率很低。四轴为了能够快速反应，以应对姿态变化引起的飘移，需要高反应速度的电调，常规PPM电调的更新速度只有50Hz左右，满足不了这种控制所需要的速度，且PPM电调MCU内置PID稳速控制，能对常规航模提供顺滑的转速变化特性，用在四轴上就不合适了，四轴需要的是快速反应的电机转速变化。用高速专用电调，IIC总线接口传送控制信号，可达到每秒几百上千次的电机转速变化，在四轴飞行时，姿态时刻能够保持稳定。即使受到外力突然冲击，依旧安然无恙。</p>
+
+</section>
+<section class="meta">
+
+<br/>
+<br/>
+<span>
+	<a  href="/2013/10/10/oracle-kill-session/" class="pageNav"  >Previous</a>
+	&nbsp;&nbsp;&nbsp;
+	<a  href="/2013/11/01/linux_find/" class="pageNav"  >Next</a>
+</span>
+<hr>
+<span class="author">
+  <a href="http://wuzhefang.github.com">wuzhefang</a>
+</span>
+<span class="time">
+  /
+  <time datetime="2013-10-21">2013-10-21</time>
+</span>
+<br />
+<span class="license">
+  Published use <a rel="license" href="http://duoshuo.com/">多说</a>
+</span>
+
+<span class="categories">
+  in categories
+  
+  <a href="/categories/#diy" title="diy">diy</a>&nbsp;
+  
+</span>
+
+
+<span class="tags">
+  tagged with 
+  
+  <a href="/tags/#四轴飞行器" title="四轴飞行器">四轴飞行器</a>&nbsp;
+  
+</span>
+
+</section>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"wuzhefang"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+
+        </article>
+      </div>
+
+    <footer>
+        <p><small>
+<!-- <a href="http://github.com/wuzhefang/wuzhefang.github.io/new/master/_posts" target="_blank" title="撰写文章">Po</a>wer<a href="http://github.com/wuzhefang/wuzhefang.github.io/edit/master/_posts/2013-10-21-sizhoufeixing.md" target="_blank" title="编辑页面">ed</a>--> 
+Powored by <a href="https://github.com/mojombo/jekyll">Jekyll</a> & <a href="http://pages.github.com">GitHub</a> | Copyright 2012 - 2015 by <a href="/about/">wuzhefang</a> | <span class="label label-info" id="timeSpan"></span></small></p>
+    </footer>
+
+    </div>
+
+    <script>
+    /*
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44429524-1', 'wuzhefang.github.io');
+  ga('send', 'pageview');
+  */
+</script>
+
+
+
+    <!-- Baidu Button BEGIN -->
+		<script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=4&amp;pos=right&amp;uid=541841" ></script>
+		<script type="text/javascript" id="bdshell_js"></script>
+		<script type="text/javascript">
+		var bds_config={"bdTop":170};
+		document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+		</script>
+		<!-- Baidu Button END -->
+ <script type="text/javascript">
+ var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F6b2845040fcb1d8f55c1ae7b52400894' type='text/javascript'%3E%3C/script%3E"));
+ </script>
+
+ 
+ </body>
+</html>

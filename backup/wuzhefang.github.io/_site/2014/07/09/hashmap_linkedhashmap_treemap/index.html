@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="baidu-site-verification" content="17NdqmLQdp" />
+    <meta name="author" content="wuzhefang" />
+    <title>HashMap_LinkedHashMap_TreeMap的区别 | wuzhefang</title>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/feed/" rel="alternate" title="wuzhefang" type="application/atom+xml" />
+    <link rel="stylesheet" href="/media/css/style.css">
+    <link rel="stylesheet" href="/media/css/highlight.css">
+    <script type="text/javascript" src="/media/js/jquery-1.7.1.min.js"></script>
+  </head>
+  <script type="text/javascript">
+    function setTimeSpan(){
+    	var date = new Date();
+    	timeSpan.innerText=date.format('yyyy-MM-dd hh:mm:ss');
+    }
+    
+    Date.prototype.format = function(format)
+		{
+    var o =
+    	{
+    	    "M+" : this.getMonth()+1, //month
+    	    "d+" : this.getDate(),    //day
+    	    "h+" : this.getHours(),   //hour
+    	    "m+" : this.getMinutes(), //minute
+    	    "s+" : this.getSeconds(), //second
+    	    "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
+    	    "S" : this.getMilliseconds() //millisecond
+    	}
+    	if(/(y+)/.test(format))
+    	format=format.replace(RegExp.$1,(this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    	for(var k in o)
+    	if(new RegExp("("+ k +")").test(format))
+    	format = format.replace(RegExp.$1,RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length));
+    	return format;
+		}
+  </script>
+  <body onLoad="setInterval(setTimeSpan,1000);">
+
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>HashMap_LinkedHashMap_TreeMap的区别</h1>
+        </header>
+        <nav>
+        <span><a title="首页" class="" href="/">Home</a></span>
+        <span><a title="关于" class="" href="/about/">About</a></span>
+        <span><a title="来宾" class="" href="/guestbook/">Guestbook</a></span>
+        <span><a title="分类" class="" href="/categories/">Categories</a></span>
+<!--<span><a title="内容" class="" href="/content/">Content</a></span>-->
+        <span><a title="标签" class="" href="/tags/">Tags</a></span>
+        <span><a title="链接" class="" href="/links/">Links</a></span>
+        <span><a title="订阅" class="" href="/feed/">Subscribe</a></span>
+
+        </nav>
+        <article class="content">
+        <section class="post">
+<ul>
+<li><p>Hashmap 是一个最常用的Map,它根据键的HashCode 值存储数据,根据键可以直接获取它的值，具有很快的访问速度，遍历时，取得数据的顺序是完全随机的。</p></li>
+<li><p>HashMap最多只允许一条记录的键为Null;允许多条记录的值为 Null;HashMap不支持线程的同步，即任一时刻可以有多个线程同时写HashMap;可能会导致数据的不一致。如果需要同步，可以用 Collections的synchronizedMap方法使HashMap具有同步的能力，或者使用ConcurrentHashMap。</p></li>
+<li><p>Hashtable与 HashMap类似,它继承自Dictionary类，不同的是:它不允许记录的键或者值为空;它支持线程的同步，即任一时刻只有一个线程能写Hashtable,因此也导致了 Hashtable在写入时会比较慢。</p></li>
+<li><p>LinkedHashMap保存了记录的插入顺序，在用Iterator遍历LinkedHashMap时，先得到的记录肯定是先插入的.也可以在构造时用带参数，按照应用次数排序。在遍历的时候会比HashMap慢，不过有种情况例外，当HashMap容量很大，实际数据较少时，遍历起来可能会比LinkedHashMap慢，因为LinkedHashMap的遍历速度只和实际数据有关，和容量无关，而HashMap的遍历速度和他的容量有关。</p></li>
+<li><p>TreeMap实现SortMap接口，能够把它保存的记录根据键排序,默认是按键值的升序排序，也可以指定排序的比较器，当用Iterator 遍历TreeMap时，得到的记录是排过序的。</p></li>
+</ul>
+
+
+<hr />
+
+<ul>
+<li><p>HashMap里面存入的键值对在取出的时候是随机的,它根据键的HashCode值存储数据,根据键可以直接获取它的值，具有很快的访问速度。在Map 中插入、删除和定位元素，HashMap 是最好的选择。</p></li>
+<li><p>TreeMap取出来的是排序后的键值对。但如果您要按自然顺序或自定义顺序遍历键，那么TreeMap会更好。</p></li>
+<li><p>LinkedHashMap 是HashMap的一个子类，如果需要输出的顺序和输入的相同,那么用LinkedHashMap可以实现,它还可以按读取顺序来排列，像连接池中可以应用。</p></li>
+<li><p>HashSet是通过HashMap实现的,TreeSet是通过TreeMap实现的,<strong>只不过Set用的只是Map的key</strong></p></li>
+<li>Map的key和Set都有一个共同的特性就是集合的唯一性.TreeMap更是多了一个排序的功能.</li>
+<li>hashCode和equal()是HashMap用的, 因为无需排序所以只需要关注定位和唯一性即可.
+
+<ol type="a">
+<li>hashCode是用来计算hash值的,hash值是用来确定hash表索引的.</li>
+<li>hash表中的一个索引处存放的是一张链表, 所以还要通过equal方法循环比较链上的每一个对象
+ 才可以真正定位到键值对应的Entry.</li>
+<li>put时,如果hash表中没定位到,就在链表前加一个Entry,如果定位到了,则更换Entry中的value,并返回旧value</li>
+</ol>
+</li>
+<li>由于TreeMap需要排序,所以需要一个Comparator为键值进行大小比较.当然也是用Comparator定位的.
+
+<ol type="a">
+<li>Comparator可以在创建TreeMap时指定</li>
+<li>如果创建时没有确定,那么就会使用key.compareTo()方法,这就要求key必须实现Comparable接口.</li>
+<li>TreeMap是使用Tree数据结构实现的,所以使用compare接口就可以完成定位了.</li>
+</ol>
+</li>
+</ul>
+
+
+<p>注意：</p>
+
+<ul>
+<li>Collection没有get()方法来取得某个元素。只能通过iterator()遍历元素。</li>
+<li>Set和Collection拥有一模一样的接口。</li>
+<li>List，可以通过get()方法来一次取出一个元素。使用数字来选择一堆对象中的一个，get(0)...。(add/get)</li>
+<li>一般使用ArrayList。用LinkedList构造堆栈stack、队列queue。</li>
+<li>Map用 put(k,v) / get(k)，还可以使用containsKey()/containsValue()来检查其中是否含有某个key/value。</li>
+<li>HashMap 原理简介</li>
+<li><pre><code>HashMap会利用对象的hashCode来快速找到key。  
+哈希码就是将对象的信息经过一些转变形成一个独一无二的int值，这个值存储在一个array中。 
+我们都知道所有存储结构中，array查找速度是最快的。所以，可以加速查找。 
+发生碰撞时，让array指向多个values。即，数组每个位置上又生成一个梿表。 
+</code></pre></li>
+<li><p>Map中元素，可以将key序列、value序列单独抽取出来。</p></li>
+<li><pre><code>  使用keySet()抽取key序列，将map中的所有keys生成一个Set。 
+  使用values()抽取value序列，将map中的所有values生成一个Collection。 
+  为什么一个生成Set，一个生成Collection？那是因为，key总是独一无二的，value允许重复。
+</code></pre></li>
+</ul>
+
+
+</section>
+<section class="meta">
+
+<br/>
+<br/>
+<span>
+	<a  href="/2014/07/06/rubysource/" class="pageNav"  >Previous</a>
+	&nbsp;&nbsp;&nbsp;
+	<a  href="/2014/10/31/titlegitbook/" class="pageNav"  >Next</a>
+</span>
+<hr>
+<span class="author">
+  <a href="http://wuzhefang.github.com">wuzhefang</a>
+</span>
+<span class="time">
+  /
+  <time datetime="2014-07-09">2014-07-09</time>
+</span>
+<br />
+<span class="license">
+  Published use <a rel="license" href="http://duoshuo.com/">多说</a>
+</span>
+
+<span class="categories">
+  in categories
+  
+  <a href="/categories/#java基础" title="java基础">java基础</a>&nbsp;
+  
+</span>
+
+
+<span class="tags">
+  tagged with 
+  
+  <a href="/tags/#map set table" title="map set table">map set table</a>&nbsp;
+  
+</span>
+
+</section>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"wuzhefang"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+
+        </article>
+      </div>
+
+    <footer>
+        <p><small>
+<!-- <a href="http://github.com/wuzhefang/wuzhefang.github.io/new/master/_posts" target="_blank" title="撰写文章">Po</a>wer<a href="http://github.com/wuzhefang/wuzhefang.github.io/edit/master/_posts/2014-07-09-hashmap_linkedhashmap_treemap.md" target="_blank" title="编辑页面">ed</a>--> 
+Powored by <a href="https://github.com/mojombo/jekyll">Jekyll</a> & <a href="http://pages.github.com">GitHub</a> | Copyright 2012 - 2015 by <a href="/about/">wuzhefang</a> | <span class="label label-info" id="timeSpan"></span></small></p>
+    </footer>
+
+    </div>
+
+    <script>
+    /*
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44429524-1', 'wuzhefang.github.io');
+  ga('send', 'pageview');
+  */
+</script>
+
+
+
+    <!-- Baidu Button BEGIN -->
+		<script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=4&amp;pos=right&amp;uid=541841" ></script>
+		<script type="text/javascript" id="bdshell_js"></script>
+		<script type="text/javascript">
+		var bds_config={"bdTop":170};
+		document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+		</script>
+		<!-- Baidu Button END -->
+ <script type="text/javascript">
+ var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F6b2845040fcb1d8f55c1ae7b52400894' type='text/javascript'%3E%3C/script%3E"));
+ </script>
+
+ 
+ </body>
+</html>
