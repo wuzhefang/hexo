@@ -14,4 +14,4 @@ tags:
 
 外观比图片上好看很多，材质很有质感，音质也不错，音乐方面不发烧，差不多就ok。
 
-![蓝牙耳机](晒晒刚买的蓝牙耳机soul/lanyaerji.jpg)
+{% asset_img lanyaerji.jpg 蓝牙耳机 %}
