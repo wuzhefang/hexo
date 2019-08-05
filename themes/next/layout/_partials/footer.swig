@@ -3,6 +3,9 @@
 #}{%- if theme.footer.beian.enable %}{#
 #}  {{ next_url('http://www.beian.miit.gov.cn', theme.footer.beian.icp + ' ') }}{#
 #}{%- endif %}{#
+#}{%- if theme.footer.beian_gongan.enable %}{#
+#}京公网安备 11010502038485号{#
+#}{%- endif %}{#
 #}&copy; {% if theme.footer.since and theme.footer.since != current %}{{ theme.footer.since }} – {% endif %}{#
 #}<span itemprop="copyrightYear">{{ current }}</span>
   <span class="with-love" id="animate">
