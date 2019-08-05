@@ -7,7 +7,7 @@
   },
   "scripts": {
     "s": "hexo server --watch",
-    "g": "hexo g"
+    "g": "hexo clean && hexo g"
   },
   "dependencies": {
     "hexo": "^3.9.0",
