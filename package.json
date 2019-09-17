@@ -7,10 +7,12 @@
   },
   "scripts": {
     "s": "hexo server --watch",
-    "g": "hexo clean && hexo g"
+    "g": "hexo clean && hexo g",
+    "d": "hexo clean && hexo g && ssh root@148.70.173.29 rm -rf /opt/github/hexo/public && scp -r ./public root@148.70.173.29:/opt/github/hexo"
   },
   "dependencies": {
     "hexo": "^3.9.0",
+    "hexo-filter-mermaid-diagrams": "^1.0.5",
     "hexo-generator-archive": "^0.1.5",
     "hexo-generator-category": "^0.1.3",
     "hexo-generator-index": "^0.2.1",
